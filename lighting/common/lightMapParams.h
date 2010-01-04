@@ -1,0 +1,37 @@
+//-----------------------------------------------------------------------------
+// Torque Game Engine
+// Copyright (C) GarageGames.com, Inc.
+//-----------------------------------------------------------------------------
+
+#ifndef _LIGHTMAPPARAMS_H_
+#define _LIGHTMAPPARAMS_H_
+
+#ifndef _LIGHTINFO_H_
+#include "lighting/lightInfo.h"
+#endif
+
+class LightMapParams : public LightInfoEx
+{
+public:
+   LightMapParams( LightInfo *light );
+   virtual ~LightMapParams();
+
+   /// The LightInfoEx hook type.
+   static const LightInfoExType Type;
+
+   // LightInfoEx
+   virtual void set( const LightInfoEx *ex );
+   virtual const LightInfoExType& getType() const { return Type; }
+   virtual void packUpdate( BitStream *stream ) const;
+   virtual void unpackUpdate( BitStream *stream );
+
+public:
+   // We're leaving these public for easy access 
+   // for console protected fields.
+
+   bool representedInLightmap;   ///< This light is represented in lightmaps (static light, default: false)
+   ColorF shadowDarkenColor;     ///< The color that should be used to multiply-blend dynamic shadows onto lightmapped geometry (ignored if 'representedInLightmap' is false)
+   bool includeLightmappedGeometryInShadow; ///< This light should render lightmapped geometry during its shadow-map update (ignored if 'representedInLightmap' is false)
+};
+
+#endif
